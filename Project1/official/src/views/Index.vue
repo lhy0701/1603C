@@ -5,7 +5,7 @@
                 <p :ref="index">{{index}}</p>
                 <div>
                     <li v-for="(value, key) in item" :key="key" :data-id="value.MasterID">
-                        <img :src="value.CoverPhoto" :alt="value.Name">
+                        <img :data-src="value.CoverPhoto" >
                         <span>{{value.Name}}</span>
                         <img v-if="value.tagurl" :src="value.tagurl.replace('http','https')">
                     </li>
@@ -27,6 +27,7 @@
 <script>
     import {mapState, mapActions, mapMutations} from 'vuex';
     import MakeList from '@/components/MakeList';
+    import {lazyLoad} from '@/utils/lazyLoad';
     export default{
         name: 'Index',
         computed: {
@@ -94,6 +95,7 @@
         },
         mounted(){
             this.getBrandList();
+            lazyLoad('.car-list');
         }
     }
 </script>

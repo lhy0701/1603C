@@ -11,10 +11,10 @@ const mutations = {
      * @param {*} payload
      */
     updateCarList(state, payload){
-       state.list = payload.list;
-        console.log('payload...', payload.list, sortCar(payload.list),
-            mergeCar(sortCar(payload.list)),
-            mergeCar(sortCar(filter(2018, payload.list))));
+        state.list = payload.list;
+        // console.log('payload...', payload.list, sortCar(payload.list),
+        //     mergeCar(sortCar(payload.list)),
+        //     mergeCar(sortCar(filter(2018, payload.list))));
     }
 }
 
