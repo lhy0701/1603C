@@ -20,22 +20,34 @@
                 {{item}}
             </h6>
         </section>
+        <MakeList :makeList="makeList"
+            :class="showMakeList?'active':''" :hideMakeList="hideMakeList"/>
     </div>
 </template>
 <script>
-    import {mapState, mapActions} from 'vuex';
+    import {mapState, mapActions, mapMutations} from 'vuex';
+    import MakeList from '@/components/MakeList';
     export default{
         name: 'Index',
         computed: {
             ...mapState({
                 letters: state=>state.index.letters,
-                brandList: state=>state.index.brandList
+                brandList: state=>state.index.brandList,
+                makeList: state=>state.index.makeList,
+                showMakeList: state=>state.index.showMakeList
             })
+        },
+        components: {
+            MakeList
         },
         methods: {
             ...mapActions({
                 getBrandList: 'index/getBrandList',
                 getMakeList: 'index/getMakeList'
+            }),
+            ...mapMutations({
+                // 隐藏车系列表
+                hideMakeList: 'index/hideMakeList'
             }),
             touchStart(){
 
@@ -73,7 +85,7 @@
                     console.log('id...', target, id);
                     this.getMakeList(id);
                 }
-            }
+            },
         },
         updated(){
              // 获取字母列表距离顶部的高度
@@ -143,6 +155,19 @@ ul{
         img:last-child{
             height: .36rem;
         }
+    }
+}
+.make-list.active{
+    transform: translate3d(0, 0, 0);
+    // animation: makeAnim .3s ease forwards;
+
+}
+@keyframes makeAnim {
+    0%{
+        transform: translate3d(100%, 0, 0);
+    }
+    100%{
+         transform: translate3d(0, 0, 0);
     }
 }
 </style>

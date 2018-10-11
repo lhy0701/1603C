@@ -33,3 +33,11 @@ export let getBrandList = ()=>{
 export let getMakeList = (id)=>{
     return sendRequest(`/v2-car-getMakeListByMasterBrandId.html?MasterID=${id}`);
 }
+/**
+ * 获取车系详情
+ * @param {*} id 车系id
+ * @returns promise
+ */
+export let getCarInfo = (id)=>{
+    return sendRequest(`/v2-car-getInfoAndListById.html?SerialID=${id}`);
+}
