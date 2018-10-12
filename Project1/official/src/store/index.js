@@ -5,12 +5,14 @@ import Logger from 'vuex/dist/logger';
 // 引入modules
 import index from './modules/index';
 import detail from './modules/detail';
+import img from './modules/img';
 
 Vue.use(Vuex);
 export default new Vuex.Store({
     modules:{
         index,
-        detail
+        detail,
+        img
     },
     plugins: [Logger()]
 })
