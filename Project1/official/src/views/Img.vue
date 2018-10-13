@@ -1,5 +1,5 @@
 <template>
-    <div class="wrap" @scroll="scroll">
+    <div class="wrap" @scroll11="scroll" ref="wrap">
         <section ref="section">
             <!-- <span v-for="(item, index) in imgList" :key="index" :style="{'background-image':`url(${item.Url.replace('{0}', item.LowSize)})`}"></span> -->
             <img v-for="(item, index) in imgList" src="src/assets/default.png" :key="index" :data-src="`${item.Url.replace('{0}', item.LowSize)}`"/>
@@ -24,10 +24,11 @@ export default {
             getImgList: 'img/getCategoryImgList'
         }),
         // 监听列表滚动
-        scroll(e){
+        scroll(){
+            let scrollTop = this.$refs.wrap.scrollTop;
             let height = this.$refs.section.getBoundingClientRect().height;
-            // console.log(e.target.scrollTop, (height-window.innerHeight));
-            if ((e.target.scrollTop > ((height-window.innerHeight) - 20)) && !this.isFetching){
+            console.log(scrollTop, (height-window.innerHeight));
+            if ((scrollTop > ((height-window.innerHeight) - 20)) && !this.isFetching){
                 // 执行加载下一页的逻辑
                 console.log('加载下一页');
                 this.getImgList({
@@ -47,8 +48,10 @@ export default {
             SerialID: 2593,
             ImageID: 6
         });
-        // let func = debounce(e=>this.scroll(e));
-        // this.$refs.wrap.addEventListener('scroll', func);
+
+        // let func = this.scroll;
+        let func = debounce(this.scroll, 100);
+        this.$refs.wrap.addEventListener('scroll', func);
     }
 }
 </script>

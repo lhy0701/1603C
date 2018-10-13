@@ -5,7 +5,7 @@
  * @param {number} [delay=150]
  * @returns 去抖动之后的函数
  */
-function debounce(func, delay=150){
+export function debounce(func, delay=150){
     let timer = 0;
 
     return function(){
@@ -23,7 +23,7 @@ function debounce(func, delay=150){
  * @param {number} [delay=150]
  * @returns
  */
-function throttle(func, delay=150){
+export function throttle(func, delay=150){
     let timer = +new Date();
 
     return function(){
