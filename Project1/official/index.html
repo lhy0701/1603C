@@ -19,6 +19,13 @@
           s.parentNode.insertBefore(hm, s);
         })();
     </script>
+    <script src="https://browser.sentry-cdn.com/4.1.1/bundle.min.js" crossorigin="anonymous"></script>
+    <script>
+        Sentry.init({ dsn: 'https://8770a905964844f2a3ad036701b92c07@sentry.io/1303633' });
+        setTimeout(()=>{
+            console.log(a.a);
+        }, 1000);
+    </script>
   </head>
   <body>
     <div id="app"></div>
