@@ -5,7 +5,7 @@ module.exports = {
   entry: './src/main.js',
   output: {
     path: path.resolve(__dirname, './dist'),
-    publicPath: './dist/',
+    publicPath: '/dist/',
     filename: 'build.js'
   },
   module: {
@@ -50,8 +50,9 @@ module.exports = {
     historyApiFallback: true,
     noInfo: true,
     overlay: true,
-    port: 80,
-    disableHostCheck: true
+    port: 8080,
+    disableHostCheck: true,
+    host: '169.254.78.172'
   },
   performance: {
     hints: false

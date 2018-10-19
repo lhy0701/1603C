@@ -3,6 +3,16 @@ const SMSClient = require('@alicloud/sms-sdk');
 const bodyParser = require('body-parser')
 let app = express();
 
+// 引入mysql
+var mysql      = require('mysql');
+var connection = mysql.createConnection({
+  host     : 'localhost',
+  user     : 'root',
+  password : '',
+  database : '1603c'
+});
+
+
 
 app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -31,6 +41,55 @@ app.post('/sendSMS', bodyParser.json(), async (req, res) => {
         })
     }
 });
+
+// 登陆接口
+app.post('/login', bodyParser.json(),  (req, res)=>{
+    let {username,password,phone} = req.body;
+    console.log('phone...', phone);
+    // 查询手机号是否注册过
+    connection.query(`select count(*) as num from user where phone=${phone}`, function (error, results, fields) {
+        if (error) throw error;
+
+        console.log('The solution is: ', results[0].solution);
+        console.log('result...', results);
+        if (results[0].num){
+            // 查询到数据，做登陆操作
+            connection.query(`select count(*) as num from user where username="${username}" and password="${password}" and phone=${phone}`, function (error, results, fields) {
+                if (results[0].num){
+                    res.json({
+                        code: 1,
+                        data: {},
+                        msg: '登陆成功'
+                    })
+                }else{
+                    res.json({
+                        code: -2,
+                        data: {},
+                        msg: '用户名或者密码错误'
+                    })
+                }
+            })
+        }else{
+            // 做注册操作
+            connection.query(`insert into user (username, password, phone, create_time) values("${username}", "${password}", ${phone}, ${+ new Date()})`, function (error, results, fields) {
+                console.log('result...', results);
+                if (results.insertId){
+                    res.json({
+                        code: 1,
+                        data: {},
+                        msg: '注册成功'
+                    })
+                }else{
+                    res.json({
+                        code: -1,
+                        data: {},
+                        msg: '注册失败'
+                    })
+                }
+            })
+        }
+    });
+})
 
 function sendSMS(phone) {
     // ACCESS_KEY_ID/ACCESS_KEY_SECRET 根据实际申请的账号信息进行替换
