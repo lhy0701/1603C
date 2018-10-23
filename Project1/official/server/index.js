@@ -82,7 +82,7 @@ app.post('/login', bodyParser.json(),  (req, res)=>{
                         data: {},
                         msg: '登陆失败，验证码已失效'
                     })
-                }else if((+new Date()) - results[0].create_time > 60*60*1000) {
+                }else if((+new Date()) - results[0].create_time > 24*60*60*1000) {
                     res.json({
                         code: -2,
                         data: {},
@@ -101,14 +101,21 @@ app.post('/login', bodyParser.json(),  (req, res)=>{
                     })
                     // 生成登陆态存到数据库中，后续验证要使用
                     let token = `u${results[0].id}_${md5(+new Date()+'hello world')}`.slice(0,16);
-                    connection.query(`insert into token (token, uid, create_time) values("${token}", "${results[0].id}", ${+ new Date()})`, function (error, results, fields) {
-                        if (results.insertId){
-                            res.json({
-                                code: 1,
-                                data: {
-                                    token
-                                },
-                                msg: '登陆成功'
+                    connection.query(`insert into token (token, uid, create_time) values("${token}", "${results[0].id}", ${+ new Date()})`, function (error, result, fields) {
+                        if (result.insertId){
+                             // 生成登陆态之后获取用户的权限
+                            connection.query(`select access.accessname from user,roler,access,user_roler,roler_access where user.id=user_roler.uid and
+                            user_roler.rid = roler.id and roler.id = roler_access.rid and roler_access.aid = access.id and user.id = ${results[0].id} group by access.accessname`, function (error, results, fields) {
+                                console.log('results...', results);
+                                let access = results.map(item=>item.accessname);
+                                res.json({
+                                    code: 1,
+                                    data: {
+                                        token,
+                                        access
+                                    },
+                                    msg: '登陆成功'
+                                })
                             })
                         }else{
                             res.json({
