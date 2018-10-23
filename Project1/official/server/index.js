@@ -1,6 +1,7 @@
 const express = require('express');
 const SMSClient = require('@alicloud/sms-sdk');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const md5 = require('md5');
 let app = express();
 
 // 引入mysql
@@ -73,9 +74,9 @@ app.post('/login', bodyParser.json(),  (req, res)=>{
         console.log('result...', results);
         if (results[0].num){
             // 查询到数据，做登陆操作
-            connection.query(`select phone_code.code as code, phone_code.status as status, phone_code.create_time as create_time from user,phone_code where user.phone=phone_code.phone
+            connection.query(`select phone_code.code as code, phone_code.status as status, phone_code.create_time as create_time, user.id as id from user,phone_code where user.phone=phone_code.phone
             and username="${username}" and password="${password}" and phone_code.phone=${phone} order by phone_code.create_time desc limit 1`, function (error, results, fields) {
-                if (results[0].status == 0){
+                if (results[0].status == 100){
                     res.json({
                         code: -1,
                         data: {},
@@ -94,13 +95,28 @@ app.post('/login', bodyParser.json(),  (req, res)=>{
                         msg: '登陆失败，验证码错误'
                     })
                 }else{
+                    // 设置验证码的状态为失效
                     connection.query(`update phone_code set status=0 where phone=${phone}`, function (error, results, fields) {
 
                     })
-                    res.json({
-                        code: 1,
-                        data: {},
-                        msg: '登陆成功'
+                    // 生成登陆态存到数据库中，后续验证要使用
+                    let token = `u${results[0].id}_${md5(+new Date()+'hello world')}`.slice(0,16);
+                    connection.query(`insert into token (token, uid, create_time) values("${token}", "${results[0].id}", ${+ new Date()})`, function (error, results, fields) {
+                        if (results.insertId){
+                            res.json({
+                                code: 1,
+                                data: {
+                                    token
+                                },
+                                msg: '登陆成功'
+                            })
+                        }else{
+                            res.json({
+                                code: -4,
+                                data: {},
+                                msg: 'token生成失败'
+                            })
+                        }
                     })
                 }
             })

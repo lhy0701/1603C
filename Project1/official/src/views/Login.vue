@@ -22,6 +22,7 @@
 
 <script>
     var md5 = require('md5');
+    import {setToken} from '@/utils/index.js';
     export default {
         data(){
             return {
@@ -68,6 +69,8 @@
                 }).then(res=>res.json())
                 .then(body=>{
                     console.log('body...', body);
+                    // 设置token
+                    setToken(body.data.token);
                     this.$alert(body.msg);
                 })
             },
