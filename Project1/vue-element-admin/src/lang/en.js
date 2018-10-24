@@ -8,6 +8,7 @@ export default {
     pagePermission: 'Page Permission',
     directivePermission: 'Directive Permission',
     icons: 'Icons',
+    wz1603c: '1603C',
     components: 'Components',
     componentIndex: 'Introduction',
     tinymce: 'Tinymce',

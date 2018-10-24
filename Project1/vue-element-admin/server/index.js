@@ -16,10 +16,26 @@ var connection = mysql.createConnection({
 
 
 app.all('*', function(req, res, next) {
+    console.log(req.header('X-Token'))
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "content-type");
+    res.header("Access-Control-Allow-Headers", "X-Token");
     res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
-    // res.header("Content-Type", "application/json;charset=utf-8");
+  // res.header("Content-Type", "application/json;charset=utf-8");
+
+  // token前置拦截检测
+    var token = req.header('X-Token');
+    if(!token) {
+      res.json({
+        code: -10,
+        msg: '无效的token'
+      })
+    } else{
+      // res.json({
+
+      // })
+    }
+
 
     next();
 });
@@ -180,6 +196,17 @@ function sendSMS(phone) {
         console.log(err)
     })
 }
+
+//获取所有学生的名单
+app.get('/allUser', (req, res) => {
+  connection.query(`select * from user`, function (error, results, fields) {
+      res.json({
+          code: 1,
+          data: results,
+          msg: ''
+      })
+  })
+})
 
 app.listen(10002, () => {
     console.log('正在监听10001端口');

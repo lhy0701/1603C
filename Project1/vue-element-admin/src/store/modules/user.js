@@ -50,21 +50,21 @@ const user = {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
         loginByUsername(username, md5(userInfo.password + 'hello world')).then(response => {
-          const data = response.data.data
-          console.log('data...', data)
+          const data = response.data
+          // console.log('data...', data, data.token);
           commit('SET_TOKEN', data.token)
           setToken(data.token)
 
           // 设置roles
-          if (!data.access.length) {
-            data.access = ['guest']
-          }
-          commit('SET_ROLES', data.access)
+          // if (!data.access.length) {
+          //   data.access = ['guest']
+          // }
+          // commit('SET_ROLES', data.access)
 
           // 设置名字，头像，自我介绍
-          commit('SET_NAME', data.name)
-          commit('SET_AVATAR', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')
-          commit('SET_INTRODUCTION', `我是${data.name}`)
+          // commit('SET_NAME', data.name)
+          // commit('SET_AVATAR', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')
+          // commit('SET_INTRODUCTION', `我是${data.name}`)
           resolve()
         }).catch(error => {
           console.log('error', error)
@@ -97,6 +97,7 @@ const user = {
           commit('SET_AVATAR', data.avatar)
           commit('SET_INTRODUCTION', data.introduction)
           resolve(response)
+
         }).catch(error => {
           reject(error)
         })

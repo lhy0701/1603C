@@ -141,7 +141,18 @@ export const asyncRouterMap = [
       }
     ]
   },
-
+  {
+    path: '/1603C',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/1603c/index'),
+        name: '1603C',
+        meta: { title: 'wz1603c', icon: 'peoples', noCache: true }
+      }
+    ]
+  },
   {
     path: '/icon',
     component: Layout,
