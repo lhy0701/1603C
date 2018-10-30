@@ -18,23 +18,23 @@ var connection = mysql.createConnection({
 app.all('*', function(req, res, next) {
     console.log(req.header('X-Token'))
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "content-type");
-    res.header("Access-Control-Allow-Headers", "X-Token");
+    // res.header("Access-Control-Allow-Headers", "content-type");
+    res.header("Access-Control-Allow-Headers", "content-type,X-Token");
     res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
   // res.header("Content-Type", "application/json;charset=utf-8");
 
   // token前置拦截检测
-    var token = req.header('X-Token');
-    if(!token) {
-      res.json({
-        code: -10,
-        msg: '无效的token'
-      })
-    } else{
-      // res.json({
+    // var token = req.header('X-Token');
+    // if(!token) {
+    //   res.json({
+    //     code: -10,
+    //     msg: '无效的token'
+    //   })
+    // } else{
+    //   // res.json({
 
-      // })
-    }
+    //   // })
+    // }
 
 
     next();
@@ -205,6 +205,25 @@ app.get('/allUser', (req, res) => {
           data: results,
           msg: ''
       })
+  })
+})
+
+// 更新学生信息
+app.post('/updateUser', bodyParser.json(), (req, res)=>{
+  console.log('req..', req.body);
+  connection.query(`update user set username="${req.body.username}",phone = ${req.body.phone}, email = "${req.body.email}", status = ${req.body.status} where id=${req.body.id}`, function (error, results, fields) {
+      console.log('results...', results);
+      if (results.affectedRows){
+        res.json({
+          code: 1,
+          msg: '用户修改成功'
+        })
+      }else{
+        res.json({
+          code: -1,
+          msg: '用户信息修改失败'
+        })
+      }
   })
 })
 

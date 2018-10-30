@@ -126,7 +126,10 @@ export default {
     draft: '草稿',
     delete: '删除',
     cancel: '取 消',
-    confirm: '确 定'
+    confirm: '确 定',
+    username: '用户名',
+    phone: '手机号',
+    email: '邮箱'
   },
   errorLog: {
     tips: '请点击右上角bug小图标',
