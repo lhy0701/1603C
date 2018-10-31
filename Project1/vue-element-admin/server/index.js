@@ -1,6 +1,7 @@
 const express = require('express');
 const SMSClient = require('@alicloud/sms-sdk');
 const bodyParser = require('body-parser');
+var multipart = require('connect-multiparty');
 const md5 = require('md5');
 let app = express();
 
@@ -22,6 +23,13 @@ app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "content-type,X-Token");
     res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
   // res.header("Content-Type", "application/json;charset=utf-8");
+
+  // 动态判断域名，设置access-control-allow-origin
+  // let origin = req.header('origin');
+  // const whiteList = ['a.com', 'b.com', 'c.com', 'd.com'];
+  // if (whiteList.indexOf(origin) !== -1){
+  //   res.header("Access-Control-Allow-Origin", origin);
+  // }
 
   // token前置拦截检测
     // var token = req.header('X-Token');
@@ -227,6 +235,88 @@ app.post('/updateUser', bodyParser.json(), (req, res)=>{
   })
 })
 
+// 删除学生信息
+app.delete('/deleteUser', bodyParser.json(), (req, res)=>{
+  console.log('req...', req.body);
+  connection.query(`update user set status=0 where id=${req.body.id}`, function(error, results, fields){
+    console.log('results...', results);
+    if (results.affectedRows){
+      res.json({
+        code: 1,
+        msg: '删除用户成功'
+      })
+    }else{
+      res.json({
+        code: -1,
+        msg: '删除用户失败'
+      })
+    }
+  })
+})
+
+// 图片上传功能
+app.post('/upload',multipart({ autoFiles: true, uploadDir:'server/upload/' }), (req, res)=>{
+  res.json({});
+  // 获取表单
+  console.log('req...', req.body);
+  // 获取文件
+  console.log('req files...', req.files.avatar);
+  let files = req.files;
+  var path = [];
+  for (let i in files){
+    let types = ['jpg', 'png', 'jpeg', 'png', 'doc', 'bmp', 'gif', 'txt'];
+    let fileType = files[i].type.split('/')[1];
+    types.forEach(item=>{
+      if (types.indexOf(fileType.toLowerCase()) != -1){
+        let name = files[i].path.split('\\');
+        console.log('name...', name[name.length-1]);
+        path.push(`http://169.254.78.172:9527/server/upload/${name[name.length-1]}`);
+
+        // 重命名文件逻辑
+        // fs.rename(req.files[i][item].path, './upload'+name[name.length-1], (err)=>{
+        //   if (err) throw err;
+        //   path.push(req.files[i][item].path);
+        // })
+      }
+    })
+  }
+  console.log('path...', path);
+  res.json({
+    code: 0,
+    data: {
+      files:{
+        avatar:path[0]
+      }
+    },
+    msg: '图片上传成功',
+  })
+})
+
+
+// 文件上传功能
+app.post('/uploadFile',multipart({ autoFiles: true, uploadDir:'server/upload/' }), (req, res)=>{
+  // 获取表单
+  console.log('req...', req.body);
+  // 获取文件
+  console.log('req files...', req.files);
+  let files = req.files;
+  var paths = [];
+  for (let i in files){
+    let item = Object.values(files[i])[0];
+    paths.push({
+      fileName: item.originalFilename,
+      path: `http://169.254.78.172:9527/${item.path}`
+    })
+  }
+  console.log('path...', paths);
+  res.json({
+    code: 0,
+    data: {
+     paths
+    },
+    msg: '图片上传成功',
+  })
+})
 app.listen(10002, () => {
-    console.log('正在监听10001端口');
+    console.log('正在监听10002端口');
 });

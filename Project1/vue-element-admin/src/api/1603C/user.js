@@ -20,3 +20,17 @@ export function updateUser(data) {
     data
   })
 }
+
+/**
+ * 删除用户
+ * @export
+ * @param {*} data
+ * @returns
+ */
+export function deleteUser(data) {
+  return request({
+    url: '/deleteUser',
+    method: 'delete',
+    data
+  })
+}
