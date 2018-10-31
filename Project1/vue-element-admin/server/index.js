@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const SMSClient = require('@alicloud/sms-sdk');
 const bodyParser = require('body-parser');
 var multipart = require('connect-multiparty');
@@ -14,6 +15,8 @@ var connection = mysql.createConnection({
   database : '1603c'
 });
 
+// 设置静态文件夹
+app.use('/static', express.static(path.join(__dirname, 'static')));
 
 
 app.all('*', function(req, res, next) {
@@ -255,7 +258,7 @@ app.delete('/deleteUser', bodyParser.json(), (req, res)=>{
 })
 
 // 图片上传功能
-app.post('/upload',multipart({ autoFiles: true, uploadDir:'server/upload/' }), (req, res)=>{
+app.post('/upload',multipart({ autoFiles: true, uploadDir:'server/static/' }), (req, res)=>{
   res.json({});
   // 获取表单
   console.log('req...', req.body);
@@ -294,7 +297,7 @@ app.post('/upload',multipart({ autoFiles: true, uploadDir:'server/upload/' }), (
 
 
 // 文件上传功能
-app.post('/uploadFile',multipart({ autoFiles: true, uploadDir:'server/upload/' }), (req, res)=>{
+app.post('/uploadFile',multipart({ autoFiles: true, uploadDir:'server/static/' }), (req, res)=>{
   // 获取表单
   console.log('req...', req.body);
   // 获取文件
@@ -311,10 +314,22 @@ app.post('/uploadFile',multipart({ autoFiles: true, uploadDir:'server/upload/' }
   console.log('path...', paths);
   res.json({
     code: 0,
-    data: {
-     paths
-    },
+    data: paths,
     msg: '图片上传成功',
+  })
+})
+
+// 头像上传的功能
+app.post('/avatarUpload',multipart({ autoFiles: true, uploadDir:'server/static/' }), (req, res)=>{
+  // 获取表单
+  console.log('req...', req.files);
+  let path = req.files.avatar.path;
+  res.json({
+    code: 1,
+    data: {
+      path: `http://169.254.78.172:9527/${path}`
+    },
+    msg: '图片上传成功'
   })
 })
 app.listen(10002, () => {
