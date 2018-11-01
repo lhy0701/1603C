@@ -121,7 +121,7 @@ app.post('/login', bodyParser.json(), (req, res) => {
           connection.query(`insert into token (token, uid, create_time) values("${token}", "${results[0].id}", ${+ new Date()})`, function (error, result, fields) {
             if (result.insertId) {
               // 生成登陆态之后获取用户的权限
-              connection.query(`select access.accessname from user,roler,access,user_roler,roler_access where user.id=user_roler.uid and
+              connection.query(`select access.accessname,user.username,user.avatar,user.introduction from user,roler,access,user_roler,roler_access where user.id=user_roler.uid and
                             user_roler.rid = roler.id and roler.id = roler_access.rid and roler_access.aid = access.id and user.id = ${results[0].id} group by access.accessname`, function (error, results, fields) {
                 console.log('results...', results);
                 let access = results.map(item => item.accessname);
@@ -129,7 +129,10 @@ app.post('/login', bodyParser.json(), (req, res) => {
                   code: 1,
                   data: {
                     token,
-                    access
+                    access,
+                    name: results[0].username,
+                    avatar: results[0].avatar,
+                    introduction: results[0].introduction
                   },
                   msg: '登陆成功'
                 })
@@ -328,7 +331,7 @@ app.post('/uploadFile', multipart({
   res.json({
     code: 0,
     data: paths,
-    msg: '图片上传成功',
+    msg: '上传成功',
   })
 })
 

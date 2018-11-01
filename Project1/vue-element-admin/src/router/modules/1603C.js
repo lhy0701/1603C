@@ -5,13 +5,14 @@ import Layout from '@/views/layout/Layout'
 const wz1603CRouter =  {
   path: '/1603C',
   component: Layout,
-  meta: { title: 'wz1603c', icon: 'list', noCache: true },
+  alwaysShow: true,
+  meta: { title: 'wz1603c', icon: 'list', noCache: true, roles: ['adm'] },
   children: [
     {
       path: 'index',
       component: () => import('@/views/1603c/index'),
       name: 'user',
-      meta: { title: 'userManage', icon: 'peoples', noCache: true }
+      meta: { title: 'userManage', icon: 'peoples', noCache: true,  roles: ['teacher'] }
     },
     {
       path: 'avatar',
