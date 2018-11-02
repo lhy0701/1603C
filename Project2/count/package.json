@@ -20,7 +20,9 @@
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.1.0",
     "husky": "^0.12.0",
+    "node-sass": "^4.9.4",
     "redbox-react": "^1.4.3",
-    "roadhog": "^2.0.0"
+    "roadhog": "^2.0.0",
+    "sass-loader": "^7.1.0"
   }
 }

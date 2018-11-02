@@ -1,0 +1,17 @@
+.h1{
+  color: aqua
+}
+h2{
+  border: 1px dashed darkcyan;
+}
+:global{
+  .h1{
+    color: bisque;
+  }
+  .p{
+    color: black;
+  }
+}
+.p{
+  color: salmon;
+}
