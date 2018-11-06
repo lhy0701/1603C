@@ -14,40 +14,39 @@ const Series = dynamic({
   component: () => import('../routes/SeriesPage'),
 });
 
-const Recommend = dynamic({
-  // models: () => [
-  //   import('../models/series'),
-  // ],
-  component: () => import('../routes/series/Recommend'),
-});
-
-
-
 // 声明无状态组件
 const StateLess = props=>{
   // console.log('props...', props);
   return <h1>{props.match.path}</h1>
 }
 
-export default {
-  routes: [{
-    path: '/animation',
-    component: StateLess
-  }, {
-    path: '/series',
-    component: Series,
-    children: [{
-      path: '/series/recommend',
-      component: Recommend
+export default app=>{
+  return  {
+    routes: [{
+      path: '/animation',
+      component: StateLess
+    }, {
+      path: '/series',
+      component: Series,
+      children: [{
+        path: '/series/recommend',
+        component: dynamic({
+          app,
+          models: () => [
+            import('../models/series'),
+          ],
+          component: () => import('../routes/series/Recommend'),
+        })
+      }]
+    },{
+      path: '/music',
+      component: StateLess
+    },{
+      path: '/dance',
+      component: StateLess
+    },{
+      path: '/',
+      redirect: '/series/recommend'
     }]
-  },{
-    path: '/music',
-    component: StateLess
-  },{
-    path: '/dance',
-    component: StateLess
-  },{
-    path: '/',
-    redirect: '/series/recommend'
-  }]
+  }
 }

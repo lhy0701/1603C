@@ -4,7 +4,9 @@ import { Router, NavLink } from 'dva/router';
 import RouterView from './router/RouterView';
 import config from './router/index';
 
-function RouterConfig({ history }) {
+function RouterConfig({ history, app }) {
+  let routes = config(app).routes;
+  // console.log('routes...', routes);
   return (
     <Router history={history}>
       <Fragment>
@@ -15,7 +17,7 @@ function RouterConfig({ history }) {
           <NavLink to="/dance">舞蹈</NavLink>
         </header>
 
-        <RouterView routes={config.routes}></RouterView>
+        <RouterView routes={routes}></RouterView>
       </Fragment>
 
       {/* <Switch>
