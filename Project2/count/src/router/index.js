@@ -1,9 +1,27 @@
 import React from 'react';
+import dynamic from 'dva/dynamic';
+
 
 // 引入一级路由
-import Series from '../routes/SeriesPage';
+// import Series from '../routes/SeriesPage';
 // 引入二级路由
-import Recommend from '../routes/series/Recommend';
+// import Recommend from '../routes/series/Recommend';
+
+const Series = dynamic({
+  // models: () => [
+  //   import('./models/users'),
+  // ],
+  component: () => import('../routes/SeriesPage'),
+});
+
+const Recommend = dynamic({
+  // models: () => [
+  //   import('../models/series'),
+  // ],
+  component: () => import('../routes/series/Recommend'),
+});
+
+
 
 // 声明无状态组件
 const StateLess = props=>{
