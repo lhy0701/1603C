@@ -10,7 +10,7 @@ const app = dva();
 // 3. Model
 // 挂载index.js
 app.model(require('./models/example').default);
-app.model(require('./models/index').default);
+app.model(require('./models/series').default);
 
 // 4. Router
 app.router(require('./router').default);

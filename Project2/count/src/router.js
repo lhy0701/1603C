@@ -1,13 +1,26 @@
-import React from 'react';
-import { Router, Route, Switch } from 'dva/router';
-import IndexPage from './routes/IndexPage';
+import React, {Fragment} from 'react';
+import { Router, NavLink } from 'dva/router';
+
+import RouterView from './router/RouterView';
+import config from './router/index';
 
 function RouterConfig({ history }) {
   return (
     <Router history={history}>
-      <Switch>
+      <Fragment>
+        <header>
+          <NavLink to="/animation">动画</NavLink>
+          <NavLink to="/series/recommend">番剧</NavLink>
+          <NavLink to="/music">音乐</NavLink>
+          <NavLink to="/dance">舞蹈</NavLink>
+        </header>
+
+        <RouterView routes={config.routes}></RouterView>
+      </Fragment>
+
+      {/* <Switch>
         <Route path="/" exact component={IndexPage} />
-      </Switch>
+      </Switch> */}
     </Router>
   );
 }
