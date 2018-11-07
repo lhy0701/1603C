@@ -1,6 +1,7 @@
 import dva from 'dva';
 import './index.css';
 import './common.css';
+import {createSocket} from './services/example';
 
 
 // 1. Initialize
@@ -18,3 +19,7 @@ app.router(require('./router').default);
 
 // 5. Start
 app.start('#root');
+
+
+// 建立scoket连接
+createSocket();

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import styles from './IndexPage.css';
 import header_img from '../assets/header.jpg'
+
 class IndexPage extends React.PureComponent {
   constructor(props) {
     super(props)
@@ -138,15 +139,21 @@ class IndexPage extends React.PureComponent {
   }
   myValue(ind) {
     console.log(ind, this.refs.my.value)
-    this.props.data[ind].push({
+    if (!this.refs.my.value){
+      return;
+    }
+    // 发送到服务器
+    this.props.sendMessage({
+      ind,
       name: "张舒童",
       pos: 2,
       con_img: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541429054762&di=1680a9ff41b5dc509124f70d3dd561a2&imgtype=0&src=http%3A%2F%2Flife.southmoney.com%2Ftuwen%2FUploadFiles_6871%2F201808%2F20180809115818693.jpg",
       time: "昨天",
       con: "",
       content: this.refs.my.value
+    }).then(()=>{
+      this.refs.my.value = ''
     })
-    this.refs.my.value = ''
   }
 }
 
@@ -162,6 +169,12 @@ const mapDispatchToProps = dispatch => {
       dispatch({
         type: 'index/fetch',
         payload: type
+      })
+    },
+    sendMessage: payload=> {
+      return dispatch({
+        type: 'index/message',
+        payload
       })
     }
   }

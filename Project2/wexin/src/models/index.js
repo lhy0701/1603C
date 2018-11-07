@@ -1,5 +1,5 @@
 // 类似于vuex的module
-import * as getList from '../services/example';
+import * as api from '../services/example';
 export default {
   // 命名空间
   namespace: 'index',
@@ -18,7 +18,7 @@ export default {
   // 一些副作用，类似于vuex的action
   effects: {
     * fetch({payload}, { call , put }) { // eslint-disable-line
-      const result = yield call(getList.getList)
+      const result = yield call(api.getList)
       console.log(result)
       yield put({
         type: 'save',
@@ -26,14 +26,30 @@ export default {
           data: result.data //网络返回的要保留的数据
         }
       });
+    },
+    * message({payload}, {call, put}){
+      const result = yield call(api.sendMessage, payload);
+      yield put({
+        type: 'sendMessage',
+        payload
+      })
+      return result;
     }
   },
   reducers: {
     save(state, { payload: { data } }) {
        return {
-         ...state, 
+         ...state,
           data: data  //第一个data是state的，第二个data是payload的
       };
+    },
+    sendMessage(state, {payload}){
+        let data = [...state.data];
+        data[payload.ind].push(payload);
+        console.log('data...', data);
+        return {
+          ...state, data
+        }
     }
   },
 };
