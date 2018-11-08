@@ -1,5 +1,7 @@
 // 类似于vuex的module
 import * as api from '../services/example';
+import { routerRedux } from 'dva/router';
+
 export default {
   // 命名空间
   namespace: 'index',
@@ -13,7 +15,23 @@ export default {
     setup({
       dispatch,
       history
-    }) {},
+    }) {
+      return history.listen(({ pathname }) => {
+        if (pathname == '/') {
+          // dispatch(routerRedux.push({
+          //   pathname: '/detail',
+          //   query: {
+          //     page:2
+          //   },
+          //   state: {
+          //     a: 1
+          //   }
+          // })),
+          console.log('hello world');
+          // dispatch({ type: 'load' });
+        }
+      });
+    },
   },
   // 一些副作用，类似于vuex的action
   effects: {
