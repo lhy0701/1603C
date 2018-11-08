@@ -235,6 +235,7 @@
 
 .myself .userContent {
   margin-right: 10px;
+  min-height: 40px;
 }
 
 .userContent p:nth-child(1) {

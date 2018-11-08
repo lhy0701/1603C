@@ -50,6 +50,14 @@ export default {
         return {
           ...state, data
         }
-    }
+    },
+    receiveMessage(state, {payload}){
+      let data = [...state.data];
+      data[payload.ind].push(payload);
+      console.log('data...', data);
+      return {
+        ...state, data
+      }
+  }
   },
 };

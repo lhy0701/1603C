@@ -1,4 +1,5 @@
 import request from '../utils/request';
+import { deflate } from 'zlib';
 
 export function query() {
   return request('/api/users');
@@ -10,9 +11,10 @@ export function getList() {
 
 // 建立一个socket
 let socket = null;
+let requestList = [];
 
-export function createSocket(){
-  socket = new WebSocket('ws://127.0.0.1:8080');
+export function createSocket(dispatch){
+  socket = new WebSocket('ws://169.254.78.172:8080');
 
   // 建立连接
   socket.addEventListener('open', function (event) {
@@ -21,7 +23,17 @@ export function createSocket(){
 
   // 接收到服务端发送的数据
   socket.addEventListener('message', function (event) {
-
+    let data = JSON.parse(event.data);
+    console.log('requestList...', requestList, data);
+    switch(data.type){
+      case 'login': requestList[data.id-1](data); break;
+      default:break;
+    }
+    console.log('data..', event.data);
+    // dispatch({
+    //   type: 'index/receiveMessage',
+    //   payload: JSON.parse(event.data)
+    // })
   });
 
   // 连接被关闭
@@ -30,6 +42,21 @@ export function createSocket(){
   });
 }
 
+// 发送消息接口
 export function sendMessage(obj){
+  const type = ['login', 'message'];
+  // 如果请求需要回调函数，把请求的回调函数放到requestList里面
+  if (obj.callback){
+    let id = requestList.push(obj.callback);
+    obj.id = id;
+  }
+
   socket.send(JSON.stringify(obj));
+}
+
+// 登陆接口
+export function login(obj){
+  console.log('obj...', obj);
+  obj.type = 'login';
+  sendMessage(obj)
 }
