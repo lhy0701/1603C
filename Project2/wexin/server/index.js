@@ -5,7 +5,7 @@ var md5 = require('md5');
 var connection = mysql.createConnection({
   host: '127.0.0.1',
   user: 'root',
-  password: '',
+  password: '1601n',
   database: '1603c'
 });
 
