@@ -35,7 +35,8 @@ wss.on('connection', function (ws) {
         wss.clients.forEach(function each(client) {
           console.log(client._id);
           if (client !== ws && client.readyState === WebSocket.OPEN) {
-            client.send(message);
+            messgaeObj.pos = 1;
+            client.send(JSON.stringify(messgaeObj));
           }
         });
         // 判断是否需要自动回复消息

@@ -154,6 +154,7 @@
   border-bottom: 1px solid #E4E4E4;
   display: flex;
   flex-direction: column;
+  background: #ddf;
 }
 
 .head_num {
@@ -190,10 +191,14 @@
 
 .right_top {
   flex: 1;
-  overflow-y: scroll;
   overflow-x: hidden;
-  display: flex;
   width: 100%;
+  background: #f00;
+}
+
+.main {
+  width: 100%;
+  display: flex;
   flex-direction: column;
 }
 
@@ -203,10 +208,15 @@
 
 .userValue {
   width: 100%;
-  display: flex;
-  margin-left: 20px;
-  margin-top: 20px;
+  margin-bottom: 20px;
+}
 
+.userValue>div {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  box-sizing: border-box;
 }
 
 .suerImg {
@@ -226,10 +236,15 @@
 }
 
 .myself {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.myself>div {
   display: flex;
   width: 100%;
   justify-content: flex-end;
-  margin-top: 20px;
+  align-items: center;
 
 }
 
@@ -288,7 +303,7 @@
   height: 70%;
   overflow: hidden;
   resize: none;
-  font-size:14px;
+  font-size: 14px;
 }
 
 .btn {
@@ -302,10 +317,12 @@
   color: #6F6E6C;
 }
 
-ul,p{
+ul,
+p {
   margin: 0;
   padding: 0;
 }
-.avatar{
+
+.avatar {
   width: 60%;
 }

@@ -86,20 +86,32 @@ class IndexPage extends React.PureComponent {
               </p>
             </div>
           </div>
-          <div className={styles.right_top}>
+          <div className={styles.right_top} ref="scroll">
+          <div className={styles.main}>
             {
               this.props.data[this.state.index].map((item, index) => {
                 return <div className={item.pos === 1 ? styles.userValue : styles.myself} key={index}>
-                  <p className={styles.suerImg}>
+                  {item.pos===1 ?  <div>
+                     <p className={styles.suerImg}>
                     <img src={item.con_img} alt="" />
                   </p>
                   <div className={styles.userContent}>
                     <p>{item.name}</p>
                     <p>{item.content}</p>
                   </div>
+                </div> : <div>
+                  <div className={styles.userContent}>
+                    <p>{item.name}</p>
+                    <p>{item.content}</p>
+                  </div>
+                  <p className={styles.suerImg}>
+                    <img src={item.con_img} alt="" />
+                  </p>
+                </div>}
                 </div>
               })
             }
+          </div>
           </div>
           <div className={styles.dialogue}>
             <div className={styles.dialogueTop}>
@@ -121,7 +133,7 @@ class IndexPage extends React.PureComponent {
                 <span className="iconfont icon-icon-"></span>
               </p>
             </div>
-            <textarea className={styles.sendCon} ref="my"></textarea>
+            <textarea className={styles.sendCon} ref="my" onKeyDown={this.keyDown.bind(this)}></textarea>
             <button className={styles.btn} onClick={() => { this.myValue(this.state.index) }}>发送(s)</button>
           </div>
         </div>
@@ -132,13 +144,27 @@ class IndexPage extends React.PureComponent {
     this.props.getData()
     console.log()
   }
+  componentDidUpdate(){
+    let scrollEle = this.refs.scroll,
+        child = this.refs.scroll.firstChild;
+    console.log('scrollEle', scrollEle, child);
+    scrollEle.scrollTop = child.getBoundingClientRect().height - scrollEle.getBoundingClientRect().height;
+  }
   click(ind) {
     this.setState({
       index: ind
     })
     this.refs.my.value = ''
   }
+  keyDown(e){
+    // e.preventDefault();
+    console.log('e...', e, e.keyCode);
+    if (e.keyCode == 13){
+      this.myValue();
+    }
+  }
   myValue(ind) {
+    ind = ind || this.state.index;
     console.log(ind, this.refs.my.value)
     if (!this.refs.my.value){
       return;
