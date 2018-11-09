@@ -10,14 +10,38 @@ export function getList() {
 
 // 建立一个socket
 let socket = null;
+// 定义socket连接状态
+let isConnect = false;
+// 存储请求回调
 let requestList = [];
+// 缓存请求
+let cacheList = [];
+// 保存dispatch
+let dispatchInstance = null;
 
 export function createSocket(dispatch){
+  dispatchInstance = dispatch;
+  connectSocket();
+}
+
+function connectSocket(){
   socket = new WebSocket('ws://169.254.12.68:8080');
 
   // 建立连接
   socket.addEventListener('open', function (event) {
     // socket.send('hello world');
+    isConnect = true;
+    // 把缓存的消息发出去
+    cacheList.forEach(obj=>{
+      if (obj.callback){
+        let id = requestList.push(obj.callback);
+        obj.id = id;
+      }
+
+      socket.send(JSON.stringify(obj));
+    })
+    // 清空cacheList
+    cacheList = [];
   });
 
   // 接收到服务端发送的数据
@@ -31,7 +55,7 @@ export function createSocket(dispatch){
           return
         }else{
           requestList[data.id-1](data);
-          dispatch({
+          dispatchInstance({
             type: 'login/login',
             payload: data
           })
@@ -39,7 +63,7 @@ export function createSocket(dispatch){
       } break;
       default: {
         if (getToken()){
-          dispatch({
+          dispatchInstance({
             type: 'index/receiveMessage',
             payload: JSON.parse(event.data)
           })} break;
@@ -54,20 +78,26 @@ export function createSocket(dispatch){
 
   // 连接被关闭
   socket.addEventListener('close', function (event) {
-
+    isConnect = false;
   });
 }
 
 // 发送消息接口
 export function sendMessage(obj){
   const type = ['login', 'message'];
-  // 如果请求需要回调函数，把请求的回调函数放到requestList里面
-  if (obj.callback){
-    let id = requestList.push(obj.callback);
-    obj.id = id;
-  }
+  if (!isConnect){
+    connectSocket();
+    // 把请求保存到缓存中
+    cacheList.push(obj);
+  }else{
+    // 如果请求需要回调函数，把请求的回调函数放到requestList里面
+    if (obj.callback){
+      let id = requestList.push(obj.callback);
+      obj.id = id;
+    }
 
-  socket.send(JSON.stringify(obj));
+    socket.send(JSON.stringify(obj));
+  }
 }
 
 // 登陆接口

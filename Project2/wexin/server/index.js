@@ -10,6 +10,18 @@ var connection = mysql.createConnection({
 });
 
 
+// 自动回复术语
+const autoReplies = ["你好，我去秒几个人，很快回来。",
+  "2.我去后山和黑山老妖研究吃唐僧的事，有事回来再说。",
+  "3.你终于来啦，我找你N年了，去火星干什么了？我现在去冥王星，回头跟你说个事，别走开啊",
+  "4.您所呼叫的用户尚未安装QQ……",
+  "5.你呼叫的人现在不在，当你听到硬盘“咔”的一声，请对着鼠标留言，谢谢……",
+  "6.主人不在。到哪儿去了？就……就是不告诉你!真要找的话，请按住电脑power键4秒钟后留言……",
+  "7.该用户没有回应，可能用户忙，请稍候再试。或按Ctrl+Alt+Del返回。",
+  "8.自省中，稍后再说...",
+  "9.DD你现在连接到的是海狼的冰箱，放入食物后请断线，谢谢合作。"
+]
+
 // 创建一个websocket服务,监听8080端口
 const wss = new WebSocket.Server({port: 8080});
 // 监听建立连接
@@ -26,6 +38,22 @@ wss.on('connection', function (ws) {
             client.send(message);
           }
         });
+        // 判断是否需要自动回复消息
+        if (messgaeObj.content.indexOf('1603C') != -1){
+          wss.clients.forEach(function each(client) {
+            if (client.readyState === WebSocket.OPEN) {
+              client.send(JSON.stringify({
+                ind: messgaeObj.ind,
+                name: 'QQ小冰',
+                pos: 1,
+                con_img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541751438067&di=2f648d63409c560cbd26b6d6781a9ea8&imgtype=0&src=http%3A%2F%2Fi1.hdslb.com%2Fbfs%2Fface%2F9d8a68e017039f1c715e7f4adf498774f6b2d5e1.jpg',
+                time: "昨天",
+                con: "",
+                content: autoReplies[Math.floor(Math.random()*9)]
+              }));
+            }
+          });
+        }
       }
     }
     console.log('message...', message);
