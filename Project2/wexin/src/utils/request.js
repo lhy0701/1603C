@@ -1,4 +1,5 @@
 import fetch from 'dva/fetch';
+import cookie from 'js-cookie';
 
 function parseJSON(response) {
   return response.json();
@@ -27,4 +28,12 @@ export default function request(url, options) {
     .then(parseJSON)
     .then(data => ({ data }))
     .catch(err => ({ err }));
+}
+
+export function setToken(value){
+  cookie.set('token', value);
+}
+
+export function getToken(){
+  return cookie.get('token');
 }

@@ -1,5 +1,4 @@
-import request from '../utils/request';
-import { deflate } from 'zlib';
+import request,{getToken} from '../utils/request';
 
 export function query() {
   return request('/api/users');
@@ -14,7 +13,7 @@ let socket = null;
 let requestList = [];
 
 export function createSocket(dispatch){
-  socket = new WebSocket('ws://169.254.78.172:8080');
+  socket = new WebSocket('ws://169.254.12.68:8080');
 
   // 建立连接
   socket.addEventListener('open', function (event) {
@@ -26,8 +25,25 @@ export function createSocket(dispatch){
     let data = JSON.parse(event.data);
     console.log('requestList...', requestList, data);
     switch(data.type){
-      case 'login': requestList[data.id-1](data); break;
-      default:break;
+      case 'login': {
+        if (data.code && data.code == -1){
+          alert('登陆失败');
+          return
+        }else{
+          requestList[data.id-1](data);
+          dispatch({
+            type: 'login/login',
+            payload: data
+          })
+        }
+      } break;
+      default: {
+        if (getToken()){
+          dispatch({
+            type: 'index/receiveMessage',
+            payload: JSON.parse(event.data)
+          })} break;
+        }
     }
     console.log('data..', event.data);
     // dispatch({

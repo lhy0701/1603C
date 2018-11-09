@@ -12,16 +12,19 @@ import Index from '../routes/IndexPage';
 //   // ],
 //   component: () => import('../routes/SeriesPage'),
 // });
-const wrapDynamic = (component, app, model)=>{
-  let params = {
-    component: ()=>import(component)
-  }
-  if (model){
-    params.app = app;
-    params.models = ()=>[import('../models/index.js')]
-  }
-  return dynamic(params);
-}
+// const wrapDynamic = (component, app, model)=>{
+//   if (model){
+//     return dynamic({
+//       app,
+//       models: ()=>[import(model)],
+//       component: ()=>import(component)
+//     })
+//   }else{
+//     return dynamic({
+//       component: ()=>import(component)
+//     })
+//   }
+// }
 
 export default app=>{
   return  {
@@ -30,11 +33,7 @@ export default app=>{
       component: Login
     }, {
       path: '/',
-      component: dynamic({
-        app,
-        models: [()=>import('../models/index')],
-        component: ()=>import('../routes/IndexPage')
-      })
+      component: Index
     }]
   }
 }

@@ -14,12 +14,13 @@ class IndexPage extends React.PureComponent {
     if (this.props.data.length === 0) {
       return false
     }
+    let {avatar, username} =  this.props;
     return (
       <div className={styles.wrap}>
         <div className={styles.left}>
           <ul className={styles.user}>
             <li>
-              <img src={header_img} alt="" />
+              <img className={styles.avatar} src={avatar} alt="" />
             </li>
             <li>
               <i className="iconfont icon-xiaoxi"></i>
@@ -145,9 +146,9 @@ class IndexPage extends React.PureComponent {
     // 发送到服务器
     this.props.sendMessage({
       ind,
-      name: "张舒童",
+      name: this.props.username,
       pos: 2,
-      con_img: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1541429054762&di=1680a9ff41b5dc509124f70d3dd561a2&imgtype=0&src=http%3A%2F%2Flife.southmoney.com%2Ftuwen%2FUploadFiles_6871%2F201808%2F20180809115818693.jpg",
+      con_img: this.props.avatar,
       time: "昨天",
       con: "",
       content: this.refs.my.value
@@ -159,7 +160,9 @@ class IndexPage extends React.PureComponent {
 
 const mapStateToProps = state => {
   return {
-    data: state.index.data
+    data: state.index.data,
+    avatar: state.login.info.avatar,
+    username: state.login.info.username
   }
 }
 

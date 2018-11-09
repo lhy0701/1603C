@@ -1,6 +1,7 @@
 // 类似于vuex的module
 import * as api from '../services/example';
 import { routerRedux } from 'dva/router';
+import {getToken} from '../utils/request';
 
 export default {
   // 命名空间
@@ -17,7 +18,12 @@ export default {
       history
     }) {
       return history.listen(({ pathname }) => {
-        if (pathname == '/') {
+        if (pathname !== '/login') {
+          if (!getToken()){
+            dispatch(routerRedux.push({
+              pathname: '/login',
+            }))
+          }
           // dispatch(routerRedux.push({
           //   pathname: '/detail',
           //   query: {
@@ -71,11 +77,18 @@ export default {
     },
     receiveMessage(state, {payload}){
       let data = [...state.data];
-      data[payload.ind].push(payload);
-      console.log('data...', data);
-      return {
-        ...state, data
+      if (payload.ind !== undefined){
+        data[payload.ind].push(payload);
+        console.log('data...', data);
+        return {
+          ...state, data
+        }
+      }else{
+        return {
+          ...state
+        }
       }
+
   }
   },
 };

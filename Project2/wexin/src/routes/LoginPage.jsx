@@ -28,6 +28,11 @@ class LoginPgae extends React.Component {
   }
 
   render() {
+    console.log('props...', this.props);
+    let {isLogin} = this.props;
+    if (isLogin){
+      this.props.history.push('/');
+    }
     const { getFieldDecorator } = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} className={styles.loginForm}>
@@ -65,15 +70,20 @@ class LoginPgae extends React.Component {
 
 const wrapLoginPage = Form.create()(LoginPgae);
 
+const mapStateToProps = state=>{
+  return {
+    isLogin: state.login.isLogin
+  }
+}
 
 const mapDispatchToProps = dispatch=>{
   return {
     login: (obj)=>{
       dispatch({
-        type: 'login/login',
+        type: 'login/loginAsync',
         payload: obj
       })
     }
   }
 }
-export default connect(null, mapDispatchToProps)(wrapLoginPage);
+export default connect(mapStateToProps, mapDispatchToProps)(wrapLoginPage);

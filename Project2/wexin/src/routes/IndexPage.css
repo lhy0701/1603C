@@ -301,3 +301,11 @@
   border: 1px solid #ccc;
   color: #6F6E6C;
 }
+
+ul,p{
+  margin: 0;
+  padding: 0;
+}
+.avatar{
+  width: 60%;
+}

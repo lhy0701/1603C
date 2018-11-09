@@ -18,15 +18,18 @@ wss.on('connection', function (ws) {
     let messgaeObj = JSON.parse(message);
     switch (messgaeObj.type) {
       case 'login': doLogin(messgaeObj, ws); break;
+      default: {
+        // 收到消息之后,广播出去
+        wss.clients.forEach(function each(client) {
+          console.log(client._id);
+          if (client !== ws && client.readyState === WebSocket.OPEN) {
+            client.send(message);
+          }
+        });
+      }
     }
     console.log('message...', message);
-    // 收到消息之后,广播出去
-    // wss.clients.forEach(function each(client) {
-    //   console.log(client._id);
-    //   if (client !== ws && client.readyState === WebSocket.OPEN) {
-    //     client.send(message);
-    //   }
-    // });
+
 
 
     // setInterval(()=>{
@@ -57,7 +60,7 @@ function doLogin({username, password, id, type}, ws) {
   connection.query(`select id,avatar from user where username='${username}' and password='${password}'`, function (error, rows, fields) {
     if (error) throw error;
     console.log('rows...', rows);
-    if (rows[0].id) {
+    if (rows[0] && rows[0].id) {
       ws._id = rows[0].id;
       // 登陆成功，生成token，定义规则：u+uid+'_'+md5(时间戳)
       let token = `u${rows[0].id}_${md5(+new Date() + 'hello world')}`.substr(0, 16);
