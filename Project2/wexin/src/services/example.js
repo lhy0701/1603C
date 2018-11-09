@@ -1,4 +1,5 @@
 import request,{getToken} from '../utils/request';
+const host = window.location.host;
 
 export function query() {
   return request('/api/users');
@@ -25,7 +26,7 @@ export function createSocket(dispatch){
 }
 
 function connectSocket(){
-  socket = new WebSocket('ws://169.254.12.68:8080');
+  socket = new WebSocket(`ws://${host}:8080`);
 
   // 建立连接
   socket.addEventListener('open', function (event) {
