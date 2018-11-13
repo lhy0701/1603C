@@ -8,24 +8,22 @@
   
   token: 统一放在get请求上
 ```
-### 登陆接口
+### 用户相关
+#### 登陆接口
 ```js
-/**
- *  登陆接口
- *  @param username
- *  @param password
- *  @url post  /user/login
- *  @return {
- *    code :1,
- *    data: {
- *      token: 132131321,
- *    },
- *    msg： '登陆成功'
- *  }
- * /
+@param username
+@param password
+@url post  /user/login
+@return {
+	code :1,
+	data: {
+		token: 132131321,
+	},
+	msg： '登陆成功'
+}
 ```
 
-### 注册接口
+#### 注册接口
 ```js
 @param username 
 @param password
@@ -40,7 +38,7 @@
 }
 ```
 
-### 获取用户权限
+#### 获取用户权限
 ```js
 @param token
 @url   get /user/authority
@@ -53,7 +51,8 @@
 }
 ```
 
-### 获取门店列表
+### 门店相关
+#### 获取门店列表
 ```js
 @param token
 @param city	可选参数
@@ -77,21 +76,19 @@
 }
 ```
 
-### 关闭门店接口
+#### 关闭门店接口
 ```js
 @param token
 @param sid	门店id
 @url   get /shop/close
 @return {
 	code: 1,
-	data: {
-	
-	},
+	data: {},
 	msg: '门店关闭成功'
 }
 ```
 
-### 更新门店信息接口
+#### 更新门店信息接口
 ```js
 @param shopInfo	门店信息的对象
 {
@@ -108,7 +105,7 @@
 	msg: '门店信息更新成功'
 }
 ```
-### 新增门店功能
+#### 新增门店功能
 ```js
 @param shopInfo 门店信息的对象
 {
@@ -126,7 +123,7 @@
 }
 ```
 
-### 门店搜索功能
+#### 门店搜索功能
 ```js
 @param search	要搜索的门店关键字
 @return {

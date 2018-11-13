@@ -328,7 +328,7 @@ class BasicList extends PureComponent {
           bodyStyle={done ? { padding: '72px 0' } : { padding: '28px 0 0' }}
           destroyOnClose
           visible={visible}
-          {...modalFooter}
+          // {...modalFooter}
         >
           {getModalContent()}
         </Modal>

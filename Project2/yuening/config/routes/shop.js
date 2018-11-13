@@ -5,6 +5,6 @@ export default {
   // component: '../layouts/BasicLayout.js',
   routes: [
       { path: '/shop/', redirect: '/shop/list' },
-      { path: '/shop/list', name: 'list', component: './Shop/Index',icon:'bars' }
+      { path: '/shop/list', name: 'list', component: './Shop/List',icon:'bars' }
     ],
 }
