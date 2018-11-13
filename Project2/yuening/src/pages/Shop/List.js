@@ -1,9 +1,48 @@
 import React from 'react';
-import {Table, Dropdown, Menu, Icon, Modal, Form} from 'antd';
+import {Table, Dropdown, Menu, Icon, Modal, Form, Input, DatePicker,Select} from 'antd';
 import {getShopList} from '../../services/api';
 import styles from './BasicList.less';
+import { connect } from 'dva';
 
 const FormItem = Form.Item;
+const SelectOption = Select.Option;
+const {TextArea} = Input;
+// function addProperty(target){
+//   target.prototype.list = [1,2,3,4,5,6];
+//   target.prototype.name = 'ShopList';
+// }
+// function addProperty(name){
+//   return function(target){
+//     target.prototype.name = name;
+//   }
+// }
+// function removeProperty(target){
+//   delete target.prototype.name;
+// }
+// function connect(func){
+//   return function(Target){
+//     // return Target;
+//     return class extends React.Component{
+//       render(){
+//         return <Target {...func()}/>
+//       }
+//     }
+//   }
+// }
+
+// @addProperty('name')
+// @removeProperty
+// @connect(()=>{
+//   return {
+//     a: 1,
+//     b: 2
+//   }
+// })
+@connect(state=>{
+  console.log('state...', state);
+  return {}
+})
+@Form.create()
 export default class ShopList extends React.PureComponent{
   constructor(props){
     super();
@@ -15,6 +54,8 @@ export default class ShopList extends React.PureComponent{
       // 当前选中这一行的数据
       current: {}
     };
+    console.log('this.list', this.list, this.name);
+    console.log('this.props', props);
   }
 
   componentDidMount(){
@@ -102,7 +143,8 @@ export default class ShopList extends React.PureComponent{
         </FormItem>
         <FormItem {...this.formLayout} label="产品描述">
           {getFieldDecorator('subDescription', {
-            rules: [{ message: '请输入至少五个字符的产品描述！', min: 5 }],
+            rules: [{ message: '请输入至少五个字符的产品描述！', min: 5},
+            { message: '请输入最多六个字符的产品描述！', max:6 }],
             initialValue: current.subDescription,
           })(<TextArea rows={4} placeholder="请输入至少五个字符" />)}
         </FormItem>
@@ -175,19 +217,34 @@ export default class ShopList extends React.PureComponent{
       pageSize: 5
     }
 
+    const modalFooter = { okText: '保存', onOk: ()=>{
+      const { dispatch, form } = this.props;
+      const { current } = this.state;
+      const id = current ? current.id : '';
+
+      // setTimeout(() => this.addBtn.blur(), 0);
+      form.validateFields((err, fieldsValue) => {
+        if (err) return;
+        console.log(fieldsValue);
+      });
+      console.log('this.current', this.state.current);
+    }, onCancel: ()=>{
+      this.setState({visible:false})
+    } };
+
     return <React.Fragment>
       <Table dataSource={this.state.list} columns={columns} pagination={pagination}/>
-      {/* <Modal
+      <Modal
           title='店铺信息编辑'
           className={styles.standardListForm}
           width={640}
           bodyStyle={{ padding: '72px 0' }}
           destroyOnClose
           visible={this.state.visible}
-          // {...modalFooter}
+          {...modalFooter}
         >
           {this.getModalContent()}
-        </Modal> */}
+        </Modal>
     </React.Fragment>
   }
 }
