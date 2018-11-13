@@ -90,6 +90,8 @@ export default {
   'menu.list.searchlist.articles': 'Search List(articles)',
   'menu.list.searchlist.projects': 'Search List(projects)',
   'menu.list.searchlist.applications': 'Search List(applications)',
+  'menu.shop': 'Manage Shop',
+  'menu.shop.list': 'Shop List',
   'menu.profile': 'Profile',
   'menu.profile.basic': 'Basic Profile',
   'menu.profile.advanced': 'Advanced Profile',

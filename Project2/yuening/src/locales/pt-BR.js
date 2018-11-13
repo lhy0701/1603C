@@ -57,6 +57,8 @@ export default {
   'menu.list.searchlist.articles': 'Lista de Busca(artigos)',
   'menu.list.searchlist.projects': 'Lista de Busca(projetos)',
   'menu.list.searchlist.applications': 'Lista de Busca(aplicações)',
+  'menu.shop': 'Manage Shop',
+  'menu.shop.list': 'Shop List',
   'menu.profile': 'Perfil',
   'menu.profile.basic': 'Perfil Básico',
   'menu.profile.advanced': 'Perfil Avançado',

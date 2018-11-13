@@ -88,6 +88,8 @@ export default {
   'menu.list.searchlist.articles': '搜索列表（文章）',
   'menu.list.searchlist.projects': '搜索列表（項目）',
   'menu.list.searchlist.applications': '搜索列表（應用）',
+  'menu.shop': '店鋪管理',
+  'menu.shop.list': '店鋪列表',
   'menu.profile': '詳情頁',
   'menu.profile.basic': '基礎詳情頁',
   'menu.profile.advanced': '高級詳情頁',

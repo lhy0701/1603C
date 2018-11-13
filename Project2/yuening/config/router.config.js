@@ -1,3 +1,5 @@
+import shopRoutes from './routes/shop.js'
+
 export default [
   // user
   {
@@ -19,6 +21,8 @@ export default [
     routes: [
       // dashboard
       { path: '/', redirect: '/dashboard/analysis' },
+       // shop
+      shopRoutes,
       {
         path: '/dashboard',
         name: 'dashboard',
@@ -38,7 +42,7 @@ export default [
             path: '/dashboard/workplace',
             name: 'workplace',
             component: './Dashboard/Workplace',
-          },
+          }
         ],
       },
       // forms
