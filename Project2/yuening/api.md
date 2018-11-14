@@ -51,6 +51,44 @@
 }
 ```
 
+#### 获取用户列表
+```js
+@param  type //1表示普通用户 2表示员工
+@param  search  可选  用户名
+@param  phone   可选  手机号
+@url  get /user/list
+@return {
+	code :1,
+	data: {
+		list: [{
+      id: 1,
+      username: 'chenmanjie',
+      phone: '17621526605',
+      avtar: '',
+      status: 0,
+      create_time: '',
+      auths: ['admin', 'staff']
+    }]
+	},
+	msg： '用户列表获取成功'
+}
+```
+#### 更新用户信息
+```js
+@param  object 用户信息
+{
+  status: 1,
+  avatar: '',
+  auths: ['admin']
+}
+@url    get /user/update
+@return {
+  code: 1,
+  data: {},
+  msg: '更新用户信息成功'
+}
+```
+
 ### 门店相关
 #### 获取门店列表
 ```js
@@ -126,6 +164,7 @@
 #### 门店搜索功能
 ```js
 @param search	要搜索的门店关键字
+@url   get /shop/search
 @return {
 	code: 1,
 	data: {
@@ -144,3 +183,4 @@
 	msg: '搜索结果'
 }
 ```
+### 
