@@ -1,15 +1,25 @@
 var express = require('express');
 var router = express.Router();
 var query = require('../db.js');
+var {getShip} = require('../utils/index');
 
+// 物流查询
+router.get('/ship', function(req, res, next){
+  let shipCode = req.query.shipCode || "SF";
+  let logisticCode = req.query.logisticCode || "118650888018";
+
+  getShip(shipCode, logisticCode, (info)=>{
+    res.json(info)
+  })
+})
 // 获取店铺列表
 router.get('/list', function(req, res, next) {
-  let sql = 'select * from shop order by id desc';
+  let sql = 'select * from shop';
   if (req.query.city){
     sql += ` where city= ${req.query.city}`
   }
   query(sql, {}, function(error, results, fields){
-      // console.log('results...', error, results);
+      console.log('results...', error, results);
       if (error){
         res.json({
           code: -1,
@@ -97,9 +107,9 @@ router.get('/close', function(req, res, next){
   })
 });
 
-// 搜索店铺
+// 搜索订单
 router.get('/search', function(req, res, next){
-  query(`select * from shop where name like '%${req.query.search}%'`, {}, function(error, results, fields){
+  query(`select * from order where orderNu like '%${req.query.search}%'`, {}, function(error, results, fields){
     console.log('search results...', error, results);
     if (error){
       res.json({
@@ -112,7 +122,7 @@ router.get('/search', function(req, res, next){
       data: {
         list: results
       },
-      msg: '搜索店铺成功'
+      msg: '搜索订单成功'
     })
   })
 });

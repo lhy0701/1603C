@@ -1,17 +1,24 @@
 var md5 = require('md5');
 var query = require('../db.js');
+var request = require('request');
+var md5 = require('md5');
 
+// 快递鸟的参数
+const merchantId = '1402616';
+const APIKey = '8e760a17-49bb-4353-92e6-0583b9fdda0d';
 // 生成token
 function geneToken(uid){
   return `u${uid}_${md5(+new Date()+'yuening')}`.slice(0, 32);
 }
-
+// 生成订单号
+function geneOrderNu(uid){
+  reurn `${uid}${md5(+new Date()+'order')}`.slice(0, 20);
+}
 // 校验token有效期
 function isExpire(create_time, expire = 7*24*60*60*1000){
   let now = +new Date();
   return now - create_time > expire;
 }
-
 // 校验token是否有效
 function checkToken(token, res, next){
   let id = token.split('_')[0].replace('u','');
@@ -38,8 +45,29 @@ function checkToken(token, res, next){
     }
   })
 }
-
+// 快递信息查询
+function getShip(shipCode, logisticCode, callback){
+  let param = JSON.stringify({
+    "OrderCode": "",
+    "ShipperCode": shipCode,
+    "LogisticCode": logisticCode
+  });
+  request.post({url:'http://api.kdniao.com/Ebusiness/EbusinessOrderHandle.aspx',
+    form: {
+      RequestData: encodeURIComponent(param),
+      EBusinessID: merchantId,
+      RequestType: 1002,
+      DataType: 2,
+      DataSign: encodeURIComponent(new Buffer(md5(param+APIKey)).toString('base64'))
+    }}, function(err,response,body){
+      // console.log('ship info...', err, body)
+      // res.json(JSON.parse(body));
+      callback(JSON.parse(body));
+  })
+}
 module.exports = {
   geneToken,
-  checkToken
+  geneOrderNu,
+  checkToken,
+  getShip
 }

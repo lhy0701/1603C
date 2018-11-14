@@ -145,8 +145,8 @@ export async function closeShop(id){
 }
 
 // 新增店铺
-export async function insertShop(id, params){
-  return request(`http://169.254.12.68:11111/shop/insert?sid=${id}`, {
+export async function insertShop(params){
+  return request(`http://169.254.12.68:11111/shop/insert`, {
     method: 'POST',
     body: params
   })

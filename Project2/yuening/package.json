@@ -7,6 +7,7 @@
     "presite": "node ./scripts/generateMock.js && cd functions && npm install",
     "start": "cross-env APP_TYPE=site umi dev",
     "start:no-mock": "cross-env MOCK=none umi dev",
+    "server": "pm2 start ./server/app.js",
     "build": "umi build",
     "site": "npm run presite && cross-env APP_TYPE=site npm run build && firebase deploy",
     "analyze": "cross-env ANALYZE=1 umi build",
