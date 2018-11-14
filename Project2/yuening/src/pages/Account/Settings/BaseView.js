@@ -6,13 +6,12 @@ import styles from './BaseView.less';
 import GeographicView from './GeographicView';
 import PhoneView from './PhoneView';
 // import { getTimeDistance } from '@/utils/utils';
-import {uploadFile} from '../../../services/api';
 
 const FormItem = Form.Item;
 const { Option } = Select;
 
 // 头像组件 方便以后独立，增加裁剪之类的功能
-const AvatarView = ({ avatar, onchange }) => (
+const AvatarView = ({ avatar }) => (
   <Fragment>
     <div className={styles.avatar_title}>
       <FormattedMessage id="app.settings.basic.avatar" defaultMessage="Avatar" />
@@ -20,7 +19,7 @@ const AvatarView = ({ avatar, onchange }) => (
     <div className={styles.avatar}>
       <img src={avatar} alt="avatar" />
     </div>
-    <Upload fileList={[]} onChange={onchange}>
+    <Upload fileList={[]}>
       <div className={styles.button_view}>
         <Button icon="upload">
           <FormattedMessage id="app.settings.basic.change-avatar" defaultMessage="Change avatar" />
@@ -82,15 +81,6 @@ class BaseView extends Component {
   getViewDom = ref => {
     this.view = ref;
   };
-
-  upload = e=>{
-    console.log('e...', e);
-    let form = new FormData();
-    form.append(e.file.name, e.file.originFileObj);
-    uploadFile(form).then(res=>{
-      console.log('res...', res);
-    })
-  }
 
   render() {
     const {
@@ -192,7 +182,7 @@ class BaseView extends Component {
           </Form>
         </div>
         <div className={styles.right}>
-          <AvatarView avatar={this.getAvatarURL()} onchange={this.upload.bind(this)}/>
+          <AvatarView avatar={this.getAvatarURL()} />
         </div>
       </div>
     );

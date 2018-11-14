@@ -1,15 +1,24 @@
-import shopRoutes from './routes/shop.js'
-
 export default [
   // user
   {
     path: '/user',
     component: '../layouts/UserLayout',
-    routes: [
-      { path: '/user', redirect: '/user/login' },
-      { path: '/user/login', component: './User/Login' },
-      { path: '/user/register', component: './User/Register' },
-      { path: '/user/register-result', component: './User/RegisterResult' },
+    routes: [{
+        path: '/user',
+        redirect: '/user/login'
+      },
+      {
+        path: '/user/login',
+        component: './User/Login'
+      },
+      {
+        path: '/user/register',
+        component: './User/Register'
+      },
+      {
+        path: '/user/register-result',
+        component: './User/RegisterResult'
+      },
     ],
   },
   // app
@@ -20,15 +29,15 @@ export default [
     authority: ['admin', 'user'],
     routes: [
       // dashboard
-      { path: '/', redirect: '/dashboard/analysis' },
-       // shop
-      shopRoutes,
+      {
+        path: '/',
+        redirect: '/dashboard/analysis'
+      },
       {
         path: '/dashboard',
         name: 'dashboard',
         icon: 'dashboard',
-        routes: [
-          {
+        routes: [{
             path: '/dashboard/analysis',
             name: 'analysis',
             component: './Dashboard/Analysis',
@@ -42,7 +51,7 @@ export default [
             path: '/dashboard/workplace',
             name: 'workplace',
             component: './Dashboard/Workplace',
-          }
+          },
         ],
       },
       // forms
@@ -50,8 +59,7 @@ export default [
         path: '/form',
         icon: 'form',
         name: 'form',
-        routes: [
-          {
+        routes: [{
             path: '/form/basic-form',
             name: 'basicform',
             component: './Forms/BasicForm',
@@ -61,8 +69,7 @@ export default [
             name: 'stepform',
             component: './Forms/StepForm',
             hideChildrenInMenu: true,
-            routes: [
-              {
+            routes: [{
                 path: '/form/step-form',
                 redirect: '/form/step-form/info',
               },
@@ -96,8 +103,7 @@ export default [
         path: '/list',
         icon: 'table',
         name: 'list',
-        routes: [
-          {
+        routes: [{
             path: '/list/table-list',
             name: 'searchtable',
             component: './List/TableList',
@@ -116,8 +122,7 @@ export default [
             path: '/list/search',
             name: 'searchlist',
             component: './List/List',
-            routes: [
-              {
+            routes: [{
                 path: '/list/search',
                 redirect: '/list/search/articles',
               },
@@ -156,7 +161,12 @@ export default [
             name: 'advanced',
             authority: ['admin'],
             component: './Profile/AdvancedProfile',
-          },
+          }, {
+            path: '/profile/booklist',
+            name: 'booklist',
+            authority: ['admin'],
+            component: './Profile/Booklist/Booklist',
+          }
         ],
       },
       {
@@ -170,7 +180,11 @@ export default [
             name: 'success',
             component: './Result/Success',
           },
-          { path: '/result/fail', name: 'fail', component: './Result/Error' },
+          {
+            path: '/result/fail',
+            name: 'fail',
+            component: './Result/Error'
+          },
         ],
       },
       {
@@ -206,13 +220,11 @@ export default [
         name: 'account',
         icon: 'user',
         path: '/account',
-        routes: [
-          {
+        routes: [{
             path: '/account/center',
             name: 'center',
             component: './Account/Center/Center',
-            routes: [
-              {
+            routes: [{
                 path: '/account/center',
                 redirect: '/account/center/articles',
               },
@@ -234,8 +246,7 @@ export default [
             path: '/account/settings',
             name: 'settings',
             component: './Account/Settings/Info',
-            routes: [
-              {
+            routes: [{
                 path: '/account/settings',
                 redirect: '/account/settings/base',
               },
@@ -258,6 +269,22 @@ export default [
             ],
           },
         ],
+      },
+      {
+        name: 'yuedu',
+        icon: 'shop',
+        path: '/yuedu',
+        routes: [{
+            path: '/yuedu/shoplist',
+            name: 'shoplist',
+            icon:'read',
+            component: './yuedu/listPage/ListPage',
+          },{
+            path: '/yuedu/bookorder',
+            name: 'bookorder',
+            icon:'audit',
+            component: './yuedu/bookorder/Bookorder',
+          }]
       },
       {
         component: '404',

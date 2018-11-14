@@ -125,13 +125,29 @@ export async function getFakeCaptcha(mobile) {
   return request(`/api/captcha?mobile=${mobile}`);
 }
 
-export async function getShopList(){
-  return request('/api/shop/list');
+// 获取店铺列表
+export async function getShopList() {
+  // return request(`/api/shop/list`);
+  return request(`http://169.254.12.68:11111/shop/list`);
 }
 
-export async function uploadFile(params) {
-  return request('http://123.206.55.50:11000/upload', {
+// 修改店铺信息
+export async function updateShop(id, params){
+  return request(`http://169.254.12.68:11111/shop/update?sid=${id}`, {
     method: 'POST',
-    body: params,
-  });
+    body: params
+  })
+}
+
+// 关闭店铺
+export async function closeShop(id){
+  return request(`http://169.254.12.68:11111/shop/close?sid=${id}`);
+}
+
+// 新增店铺
+export async function insertShop(id, params){
+  return request(`http://169.254.12.68:11111/shop/insert?sid=${id}`, {
+    method: 'POST',
+    body: params
+  })
 }
