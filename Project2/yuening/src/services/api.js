@@ -128,3 +128,10 @@ export async function getFakeCaptcha(mobile) {
 export async function getShopList(){
   return request('/api/shop/list');
 }
+
+export async function uploadFile(params) {
+  return request('http://123.206.55.50:11000/upload', {
+    method: 'POST',
+    body: params,
+  });
+}
