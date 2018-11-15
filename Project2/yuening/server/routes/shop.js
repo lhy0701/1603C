@@ -50,7 +50,7 @@ router.post('/insert', function(req, res, next){
 // 修改店铺
 router.post('/update', function(req, res, next){
   query('update shop set ? where id=?', [req.body, req.query.sid], function(error, results, fields){
-    // console.log('results...', error, results);
+    console.log('results...', error, req.body);
     if (error){
       res.json({
         code: -1,

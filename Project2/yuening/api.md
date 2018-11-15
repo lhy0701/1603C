@@ -94,6 +94,7 @@
 ```js
 @param token
 @param city	可选参数
+@param page 可选 第几页数据，默认为第一页，每页十条数据
 @url   get /shop/list
 @return {
 	code: 1,
@@ -164,6 +165,7 @@
 #### 门店搜索功能
 ```js
 @param search	要搜索的门店关键字
+@param page 可选 第几页数据，默认为第一页，每页十条数据
 @url   get /shop/search
 @return {
 	code: 1,
@@ -183,4 +185,75 @@
 	msg: '搜索结果'
 }
 ```
-### 
+
+## 物品接口
+### 物品列表功能
+```js
+@param sid  门店的id
+@param page 可选 第几页数据，默认为第一页，每页十条数据
+@url   get /goods/ist
+@return {
+	code: 1,
+	data: {
+		list: [{
+			id: 1,
+			name: '活着',
+			img: '',
+      num: 100,
+      rent: 50,
+      return: 30,
+      remain: 20,
+      shop: '北京八维门店',
+			info: '讲诉一个地主的悲惨生活，从一个地主到破产，到身边的亲人一个个离他而去，留下他自己和一头老黄牛的故事',
+			city: '北京',
+			status: 1,	// 1表示上架中，2表示下架中
+      price: 3
+    }
+	},
+	msg: '物品列表'
+}
+```
+### 新增物品功能
+```js
+@param object 物品信息
+{
+  sid: 1, // 店铺的id
+  img: '',
+  num: 100,
+  info: '讲诉一个地主的悲惨生活，从一个地主到破产，到身边的亲人一个个离他而去，留下他自己和一头老黄牛的故事',
+  price: 3
+}
+@url  post /goods/update
+@return {
+  code: 1,
+  data: {},
+  msg: '新增物品成功'
+}
+```
+
+### 更新物品功能
+```js
+@param object 物品信息
+{
+  img： '',
+  num： 100,
+  info： '讲诉一个地主的悲惨生活，从一个地主到破产，到身边的亲人一个个离他而去，留下他自己和一头老黄牛的故事',
+  price： 3
+}
+@url  post /goods/update?gid=100
+@return {
+  code: 1,
+  data: {},
+  msg: '更改物品成功'
+}
+```
+### 下架物品功能
+```js
+@param gid  物品的id
+@url  get /goods/close
+@return {
+  code: 1,
+  data: {},
+  msg: '下架物品成功'
+}
+```
