@@ -127,4 +127,26 @@ router.get('/authority', function(req, res, next){
     // console.log('error...', error, results);
   })
 })
+
+// 获取用户信息
+router.get('/info', function(req, res, next){
+  // console.log('req.headers', req.header('X-Token'));
+  let token = req.header('X-Token') || "u1_2bcd04c8fb211080e031a4e9cee58";
+  let uid = token.split('_')[0].replace('u', '');
+
+  query('select * from user where id=?', uid, function(error, results, fields){
+    if (error){
+      res.json({
+        code: -1,
+        msg: error.sqlMessage
+      })
+    }
+    console.log('results...', results, uid);
+    res.json({
+      code: 1,
+      data: results[0],
+      msg: '获取用户信息成功'
+    })
+  })
+})
 module.exports = router;

@@ -2,7 +2,7 @@ import fetch from 'dva/fetch';
 import { notification } from 'antd';
 import router from 'umi/router';
 import hash from 'hash.js';
-import { isAntdPro } from './utils';
+import { isAntdPro, getToken } from './utils';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -65,7 +65,7 @@ const cachedSave = (response, hashcode) => {
  */
 export default function request(url, option) {
   const options = {
-    expirys: isAntdPro(),
+    expires: isAntdPro(),
     ...option,
   };
   /**
@@ -81,7 +81,7 @@ export default function request(url, option) {
   const defaultOptions = {
     // credentials: 'include',
   };
-  const newOptions = { ...defaultOptions, ...options };
+  const newOptions = { ...defaultOptions, ...options};
   if (
     newOptions.method === 'POST' ||
     newOptions.method === 'PUT' ||
@@ -103,14 +103,24 @@ export default function request(url, option) {
     }
   }
 
-  const expirys = options.expirys && 60;
-  // options.expirys !== false, return the cache,
-  if (options.expirys !== false) {
+  if (getToken()){
+    if (newOptions.headers){
+      newOptions.headers['X-Token'] = getToken();
+    }else{
+      newOptions.headers = {
+        'X-Token': getToken()
+      }
+    }
+  }
+
+  const expires = options.expires && 60;
+  // options.expires !== false, return the cache,
+  if (options.expires !== false) {
     const cached = sessionStorage.getItem(hashcode);
     const whenCached = sessionStorage.getItem(`${hashcode}:timestamp`);
     if (cached !== null && whenCached !== null) {
       const age = (Date.now() - whenCached) / 1000;
-      if (age < expirys) {
+      if (age < expires) {
         const response = new Response(new Blob([cached]));
         return response.json();
       }
@@ -118,6 +128,7 @@ export default function request(url, option) {
       sessionStorage.removeItem(`${hashcode}:timestamp`);
     }
   }
+  console.log('newOptions...', newOptions);
   return fetch(url, newOptions)
     .then(checkStatus)
     .then(response => cachedSave(response, hashcode))

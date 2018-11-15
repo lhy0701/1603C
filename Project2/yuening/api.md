@@ -74,6 +74,26 @@
 	msg： '用户列表获取成功'
 }
 ```
+### 更新自己的信息
+```js
+@param object 自己的信息
+{
+  name: '',
+  img: '',
+  email: '',
+  profile: '',
+  province: '',
+  city: '',
+  address: '',
+  phone: ''
+}
+@url    post /user/updateMy
+@return {
+  code: 1,
+  data: {},
+  msg: '更新用户信息成功'
+}
+```
 #### 更新用户信息
 ```js
 @param  object 用户信息

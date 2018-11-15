@@ -2,7 +2,7 @@ import { routerRedux } from 'dva/router';
 import { stringify } from 'qs';
 import { fakeAccountLogin, getFakeCaptcha } from '@/services/api';
 import { setAuthority } from '@/utils/authority';
-import { getPageQuery } from '@/utils/utils';
+import { getPageQuery, setToken } from '@/utils/utils';
 import { reloadAuthorized } from '@/utils/Authorized';
 import md5 from 'md5';
 
@@ -22,6 +22,8 @@ export default {
       delete payload.userName;
       const response = yield call(fakeAccountLogin, payload);
       console.log('response...', response, payload);
+      // 设置token
+      setToken(response.data.token);
       // return;
       yield put({
         type: 'changeLoginStatus',
@@ -54,6 +56,8 @@ export default {
     },
 
     *logout(_, { put }) {
+       // 设置token
+      setToken('');
       yield put({
         type: 'changeLoginStatus',
         payload: {

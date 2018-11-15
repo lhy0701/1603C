@@ -182,3 +182,11 @@ export function formatWan(val) {
 export function isAntdPro() {
   return window.location.hostname === 'preview.pro.ant.design';
 }
+
+export function getToken(){
+  return window.localStorage.getItem('token');
+}
+
+export function setToken(token){
+  window.localStorage.setItem('token', token);
+}
