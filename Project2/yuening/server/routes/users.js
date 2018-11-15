@@ -20,11 +20,31 @@ router.post('/login', function(req, res, next) {
     } else{
       var token = geneToken(results[0].id);
       query('insert into token set ?', {uid: results[0].id, token, create_time: +new Date()}, (error, result, fields)=>{
-        res.json({
-          code: 1,
-          data: {token},
-          msg: '登陆成功'
+        let uid = results[0].id;
+        query('select rolername from roler,user_roler where roler.id=user_roler.rid and user_roler.uid=? and user_roler.status=1', [uid], (error, results, fields)=>{
+          if (error){
+            res.json({
+              code: -1,
+              msg: error.sqlMessage
+            })
+          }
+          let roles = results.map(item=>item.rolername);
+          res.json({
+            code: 1,
+            data: {
+              auths: roles,
+              token
+            },
+            msg: '用户权限获取成功'
+          })
+          // console.log('error...', error, results);
         })
+
+        // res.json({
+        //   code: 1,
+        //   data: {token},
+        //   msg: '登陆成功'
+        // })
         // console.log('results...', error, result);
       })
 

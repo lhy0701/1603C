@@ -4,23 +4,31 @@ import { fakeAccountLogin, getFakeCaptcha } from '@/services/api';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { reloadAuthorized } from '@/utils/Authorized';
+import md5 from 'md5';
 
 export default {
   namespace: 'login',
 
   state: {
     status: undefined,
+    token: ''
   },
 
   effects: {
     *login({ payload }, { call, put }) {
+      console.log('payload...', payload);
+      payload.username = payload.userName;
+      payload.password = md5(payload.password+'hello world');
+      delete payload.userName;
       const response = yield call(fakeAccountLogin, payload);
+      console.log('response...', response, payload);
+      // return;
       yield put({
         type: 'changeLoginStatus',
         payload: response,
       });
       // Login successfully
-      if (response.status === 'ok') {
+      if (response.code === 1) {
         reloadAuthorized();
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
@@ -49,8 +57,10 @@ export default {
       yield put({
         type: 'changeLoginStatus',
         payload: {
+          data: {
+            auths: ''
+          },
           status: false,
-          currentAuthority: 'guest',
         },
       });
       reloadAuthorized();
@@ -67,10 +77,11 @@ export default {
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-      setAuthority(payload.currentAuthority);
+      setAuthority(payload.data.auths);
       return {
         ...state,
-        status: payload.status,
+        status: 'ok',
+        token: payload.data.token,
         type: payload.type,
       };
     },

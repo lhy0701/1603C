@@ -103,13 +103,6 @@ export async function updateFakeList(params) {
   });
 }
 
-export async function fakeAccountLogin(params) {
-  return request('/api/login/account', {
-    method: 'POST',
-    body: params,
-  });
-}
-
 export async function fakeRegister(params) {
   return request('/api/register', {
     method: 'POST',
@@ -123,6 +116,16 @@ export async function queryNotices() {
 
 export async function getFakeCaptcha(mobile) {
   return request(`/api/captcha?mobile=${mobile}`);
+}
+
+const host = 'http://169.254.12.68:11111';
+// 登陆接口
+export async function fakeAccountLogin(params) {
+  console.log('url...', `${host}/user/login`);
+  return request(`${host}/user/login`, {
+    method: 'POST',
+    body: params,
+  });
 }
 
 // 获取店铺列表

@@ -17,7 +17,8 @@
 @return {
 	code :1,
 	data: {
-		token: 132131321,
+    token: 132131321,
+    auths: ['admin', 'staff']
 	},
 	msg： '登陆成功'
 }
