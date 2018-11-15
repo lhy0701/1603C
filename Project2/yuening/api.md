@@ -74,20 +74,21 @@
 	msg： '用户列表获取成功'
 }
 ```
-### 更新自己的信息
+### 更新信息接口
 ```js
 @param object 自己的信息
 {
   name: '',
-  img: '',
+  avatar: '',
   email: '',
   profile: '',
   province: '',
   city: '',
   address: '',
-  phone: ''
+  phone: '',
+  status: ''
 }
-@url    post /user/updateMy
+@url    post /user/update
 @return {
   code: 1,
   data: {},

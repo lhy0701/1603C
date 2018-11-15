@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var query = require('../db.js');
-var {geneToken} = require('../utils');
+var {geneToken, getIdFromToken} = require('../utils');
 
 // 用户登陆
 router.post('/login', function(req, res, next) {
@@ -29,6 +29,9 @@ router.post('/login', function(req, res, next) {
             })
           }
           let roles = results.map(item=>item.rolername);
+          if (!roles.length){
+            roles = ['staff'];
+          }
           res.json({
             code: 1,
             data: {
@@ -117,6 +120,9 @@ router.get('/authority', function(req, res, next){
       })
     }
     let roles = results.map(item=>item.rolername);
+    if (!roles.length){
+      roles = ['staff'];
+    }
     res.json({
       code: 1,
       data: {
@@ -130,9 +136,8 @@ router.get('/authority', function(req, res, next){
 
 // 获取用户信息
 router.get('/info', function(req, res, next){
-  // console.log('req.headers', req.header('X-Token'));
   let token = req.header('X-Token') || "u1_2bcd04c8fb211080e031a4e9cee58";
-  let uid = token.split('_')[0].replace('u', '');
+  let uid = getIdFromToken(token);
 
   query('select * from user where id=?', uid, function(error, results, fields){
     if (error){
@@ -147,6 +152,34 @@ router.get('/info', function(req, res, next){
       data: results[0],
       msg: '获取用户信息成功'
     })
+  })
+})
+
+// 更新用户信息
+router.get('/update', function(req, res, next){
+  let uid = getIdFromToken(req.header('X-Token'));
+  req.body.username = req.body.name;
+  delete req.body.name;
+  query('update user set ? where id=?', [req.body, uid], function(error, results, fields){
+    console.log('results...', error, req.body);
+    if (error){
+      res.json({
+        code: -1,
+        msg: error.sqlMessage
+      })
+    }
+    if (results.affectedRows){
+      res.json({
+        code: 1,
+        data: {},
+        msg: '修改用户信息成功'
+      })
+    }else{
+      res.json({
+        code: -2,
+        msg: '修改用户信息失败'
+      })
+    }
   })
 })
 module.exports = router;

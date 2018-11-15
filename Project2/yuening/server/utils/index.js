@@ -6,6 +6,10 @@ var md5 = require('md5');
 // 快递鸟的参数
 const merchantId = '1402616';
 const APIKey = '8e760a17-49bb-4353-92e6-0583b9fdda0d';
+// 从token获取id
+function getIdFromToken(token){
+  return token.split('_')[0].replace('u', '');
+}
 // 生成token
 function geneToken(uid){
   return `u${uid}_${md5(+new Date()+'yuening')}`.slice(0, 32);
@@ -69,5 +73,6 @@ module.exports = {
   geneToken,
   geneOrderNu,
   checkToken,
-  getShip
+  getShip,
+  getIdFromToken
 }
