@@ -12,7 +12,7 @@ router.post('/login', function(req, res, next) {
         msg: error.sqlMessage
       })
     }
-    if (!results[0].id){
+    if (!results[0] || !results[0].id){
       res.json({
         code: -2,
         msg: '用户名或密码错误'
@@ -156,7 +156,7 @@ router.get('/info', function(req, res, next){
 })
 
 // 更新用户信息
-router.get('/update', function(req, res, next){
+router.post('/update', function(req, res, next){
   let uid = getIdFromToken(req.header('X-Token'));
   req.body.username = req.body.name;
   delete req.body.name;

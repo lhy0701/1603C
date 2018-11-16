@@ -57,6 +57,7 @@
 @param  type //1表示普通用户 2表示员工
 @param  search  可选  用户名
 @param  phone   可选  手机号
+@param  page 可选 第几页数据，默认为第一页，每页十条数据
 @url  get /user/list
 @return {
 	code :1,
@@ -72,6 +73,29 @@
     }]
 	},
 	msg： '用户列表获取成功'
+}
+```
+### 注销账号的接口
+```js
+@param  type //1表示普通用户 2表示员工
+@param  uid  用户id
+@url    delete /user/action
+@return {
+  code: 1,
+  data: {},
+  msg: '注销用户成功'
+}
+```
+### 分配权限接口
+```js
+@param  type = 2
+@param  uid 用户id
+@param  auths(['admin', 'staff'])
+@url    put /user/action
+@return {
+  code: 1,
+  data: {},
+  msg: '分配用户权限成功'
 }
 ```
 ### 更新信息接口
@@ -95,21 +119,6 @@
   msg: '更新用户信息成功'
 }
 ```
-<!-- #### 更新用户信息
-```js
-@param  object 用户信息
-{
-  status: 1,
-  avatar: '',
-  auths: ['admin']
-}
-@url    get /user/update
-@return {
-  code: 1,
-  data: {},
-  msg: '更新用户信息成功'
-}
-``` -->
 
 ### 门店相关
 #### 获取门店列表
