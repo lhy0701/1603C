@@ -241,17 +241,47 @@ router.get('/list', async function(req, res, next){
       //   console.log('item.auths...', item.auths);
       //   // item.auths
       // })
-      let promises = results.map(item=>getAuths(item.id));
-      Promise.all(promises).then(body=>{
-        console.log('auth results...', body);
-        results.forEach((item, index)=>{
+
+      // 用promise做多次连接处理
+      // let promises = results.map(item=>getAuths(item.id));
+      // Promise.all(promises).then(body=>{
+      //   console.log('auth results...', body);
+      //   results.forEach((item, index)=>{
+      //     delete item.password;
+      //     item.auths = ['staff'];
+      //     if (body[index] && body[index].length){
+      //       item.auths = body[index].map(item=>{
+      //         console.log('item...', item);
+      //         return roler[item.rid-1].name
+      //       })
+      //     }
+      //   })
+      //   res.json({
+      //     code: 1,
+      //     data: {
+      //       list: results
+      //     },
+      //     msg: '获取用户列表成功'
+      //   })
+      // }).catch(err=>{
+      //   console.log('err...', err);
+      // })
+
+      // 用in语法搜索
+      let ids = results.map(item=>item.id);
+      console.log('ids...', ids);
+      query('select uid,rid from user_roler where status=1 and uid in (?)', [ids], function(error, auths, fields){
+        console.log('auth results...', auths);
+        results.forEach(item=>{
           delete item.password;
-          item.auths = ['staff'];
-          if (body[index] && body[index].length){
-            item.auths = body[index].map(item=>{
-              console.log('item...', item);
-              return roler[item.rid-1].name
-            })
+          // 获取权限
+          item.auths = auths.map(value=>{
+            if (value.uid == item.id){
+              return roler[value.rid-1].name;
+            }
+          })
+          if (!item.auths || !item.auths.length || !item.auths[0]){
+            item.auths = ['staff'];
           }
         })
         res.json({
@@ -261,8 +291,6 @@ router.get('/list', async function(req, res, next){
           },
           msg: '获取用户列表成功'
         })
-      }).catch(err=>{
-        console.log('err...', err);
       })
     }else{
       res.json({
