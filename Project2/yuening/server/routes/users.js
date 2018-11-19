@@ -307,6 +307,7 @@ router.get('/list', async function(req, res, next){
 // 注销账号
 router.delete('/action', function(req, res, next){
   let type = req.body.type || 1,
+      status = req.body.status || 0,
       id = req.body.uid;
   console.log('req.body...', req.body);
   if (!id){
@@ -317,7 +318,7 @@ router.delete('/action', function(req, res, next){
     })
     return;
   }
-  query('update user set status=0 where id=? and type=?', [id, type], function(error, results, fields){
+  query('update user set status=? where id=? and type=?', [status, id, type], function(error, results, fields){
     console.log('results...', error, results);
     if (error){
       res.json({

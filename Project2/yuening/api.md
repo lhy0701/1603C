@@ -23,6 +23,18 @@
 	msg： '登陆成功'
 }
 ```
+#### 获取用户信息接口
+```js
+@url get  /user/info
+@return {
+	code :1,
+	data: {
+    token: 132131321,
+    auths: ['admin', 'staff']
+	},
+	msg： '登陆成功'
+}
+```
 
 #### 注册接口
 ```js
@@ -250,11 +262,12 @@
 {
   sid: 1, // 店铺的id
   img: '',
+  name: "活着",
   num: 100,
   info: '讲诉一个地主的悲惨生活，从一个地主到破产，到身边的亲人一个个离他而去，留下他自己和一头老黄牛的故事',
   price: 3
 }
-@url  post /goods/update
+@url  post /goods/add
 @return {
   code: 1,
   data: {},
@@ -278,13 +291,14 @@
   msg: '更改物品成功'
 }
 ```
-#### 下架物品功能
+#### 上架/下架物品功能
 ```js
 @param gid  物品的id
+@param status 可选  物品状态，1为上架2为下架 
 @url  get /goods/close
 @return {
   code: 1,
   data: {},
-  msg: '下架物品成功'
+  msg: '上架/下架物品成功'
 }
 ```
