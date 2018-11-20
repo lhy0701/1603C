@@ -1,0 +1,57 @@
+<style lang="less">
+
+</style>
+<template>
+  <block>
+    <text>首页</text>
+    <repeat for="{{list}}" key="index">
+        <!-- 插入<script>脚本部分所声明的child组件，同时传入item -->
+        <view>
+          <!-- <image :src="item.img"/> -->
+          <view>
+            <text>{{item.name}}</text>
+          </view>
+        </view>
+    </repeat>
+  </block>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import {getShopList} from '../api/index.js';
+
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTitleText: '悦读',
+      enablePullDownRefresh: true,
+      onReachBottomDistance: 50
+    }
+    components = {
+
+    }
+
+    // mixins = [testMixin]
+
+    data = {
+      list: []
+    }
+
+    computed = {
+      now () {
+        return +new Date()
+      }
+    }
+
+    methods = {
+    }
+
+    onLoad() {
+      getShopList().then(res=>{
+        console.log('res...', res);
+        this.list = res.data.data.list;
+        this.$apply();
+      })
+    }
+
+  }
+</script>

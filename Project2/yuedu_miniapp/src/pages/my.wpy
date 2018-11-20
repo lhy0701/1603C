@@ -1,0 +1,15 @@
+<template>
+  <text>我的页面</text>
+</template>
+
+<script>
+import wepy from 'wepy';
+export default class extends wepy.page{
+
+}
+
+</script>
+
+<style lang="less" scoped>
+
+</style>

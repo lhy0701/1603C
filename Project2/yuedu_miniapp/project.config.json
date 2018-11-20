@@ -1,0 +1,15 @@
+{
+	"description": "A WePY project",
+	"setting": {
+		"urlCheck": false,
+		"es6": false,
+		"postcss": true,
+		"minified": true,
+		"newFeature": true
+	},
+	"compileType": "miniprogram",
+	"appid": "wx6d4ab8a9df77feb1",
+	"projectname": "yuedu_miniapp",
+	"miniprogramRoot": "./dist",
+	"condition": {}
+}

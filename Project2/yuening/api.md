@@ -27,12 +27,24 @@
 ```js
 @url get  /user/info
 @return {
-	code :1,
-	data: {
-    token: 132131321,
-    auths: ['admin', 'staff']
-	},
-	msg： '登陆成功'
+	code: 1
+  data:{
+    address: "轨顶风道111"
+    avatar: "http://123.206.55.50:11000/static/UT5B4pk0uNPqsPZkEKI4Epna.jpg"
+    city: "太原市"
+    create_time: "1540189715161"
+    email: "503032527@qq.com"
+    id: 26
+    name: "chenmanjie"
+    phone: "15712892269"
+    profile: "打算放假肯定发酒店客房酒店客房11111"
+    province: "山西省"
+    status: 1
+    type: 1
+    userid: 26
+    username: "chenmanjie"
+  },
+  msg: "获取用户信息成功"
 }
 ```
 
@@ -300,5 +312,57 @@
   code: 1,
   data: {},
   msg: '上架/下架物品成功'
+}
+```
+
+### 订单接口
+#### 订单列表
+```js
+@param phone  可选，通过手机号筛选
+@param name   可选，通过用户名筛选
+@param date   可选，通过日期筛选
+@param order  可选，1表示升序，0表示降序，默认0
+@param status 可选，筛选订单状态
+@param page 可选 第几页数据，默认为第一页，每页十条数据
+@url   get  /order/list
+@return {
+  code: 1,
+  data: {
+    list: [{
+      id: 1,
+      username: '',
+      phone: '',
+      orderNu: 'abbcsadjsadjajdakdjkakdajsd',
+      price: 100,
+      goods: [{
+        name: '拿铁咖啡小杯',
+        num: 1,
+        price: 10
+      },{
+        name: '拿铁咖啡大杯',
+        num: 1,
+        price: 90
+      }],
+      status: 1,  // 1未发货，2已发货，3完成
+      shipName: '', // 快递公司名字
+      logisticCode: '',   //快递单号
+      create_time: '132131231',
+      Traces: []
+    }]，
+    total: 100
+  },
+  msg: '获取订单列表成功'
+}
+```
+#### 更新订单
+```js
+@param  status,
+@param  shipName
+@param  logisticCode
+@url  post /order/update
+@return {
+  code: 1,
+  data: {},
+  msg: '更新订单成功'
 }
 ```
